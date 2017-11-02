@@ -15,9 +15,7 @@ export class HomePage {
               private sms: SMS,
               private storage: Storage,
               private backgroundGeolocation: BackgroundGeolocation,
-              private device: Device) {
-
-                this.storage.set('prueba', "1");  
+              private device: Device) {                  
 
     storage.get('token').then((val) => {
       console.log('Your token is', val);

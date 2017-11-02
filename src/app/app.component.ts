@@ -13,6 +13,7 @@ import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { SQLite } from '@ionic-native/sqlite';
 import {BdService} from './bd';
+import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'page-app',
@@ -33,11 +34,14 @@ export class MyApp {
               private bdService:BdService,
               private storage: Storage,
               private sqlite: SQLite,
+              private events: Events,
               public alertCtrl: AlertController,
               ) {
     this.initializeApp();
-        storage.get('prueba').then((val) => {
-          if(val == 0){
+
+      events.subscribe('group:changed', group => {
+        console.log(group)
+          if(group == "Cliente"){
             this.pages = [
               { title: 'Home', component: HomePage, icon: "ios-home-outline" },
               { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" }
@@ -48,9 +52,7 @@ export class MyApp {
               { title: 'Home', component: HomePage, icon: "ios-home-outline" },             
             ];
           }
-        });
-
-    
+      }) //...     
 
     // used for an example of ngFor and navigation
     
@@ -134,7 +136,9 @@ export class MyApp {
         {
           text: 'Cerrar',
           handler: data => {
-            this.delete();
+            if(this.device.platform){
+              this.delete();
+            }
             this.nav.setRoot(LoginPage);
           }
         },

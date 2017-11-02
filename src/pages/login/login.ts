@@ -6,6 +6,8 @@ import {HomePage } from '../home/home';
 import {Login} from './login.provider'
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {BdService} from '../../app/bd';
+import { Device } from '@ionic-native/device';
+import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'page-login',
@@ -21,6 +23,8 @@ export class LoginPage {
               private bdService:BdService,
               private storage: Storage,
               private sqlite: SQLite,
+              private device: Device,
+              private events: Events,
               public login:Login             
               ) {
     storage.get('onesignal_id').then((val) => {
@@ -42,7 +46,10 @@ export class LoginPage {
     this.login.login(this.username,this.password,this.onesignal_id).subscribe(
       data => {
         console.log(data)
-        this.create(data.token);
+        this.events.publish('group:changed', data.group);
+        if(this.device.platform){
+          this.create(data.token);
+        }
         this.storage.set('token', data.token);
         this.storage.set('perfil_id', data.perfil_id);
         loading.dismiss();

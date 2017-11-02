@@ -4,7 +4,7 @@ export class Rutas{
 
 
   login(){
-    return this.urlbase+ "api/v1/api-token-auth/cliente/";
+    return this.urlbase+ "api/v1/api-token-auth/";
   }
 
   phone(perfil_id){
