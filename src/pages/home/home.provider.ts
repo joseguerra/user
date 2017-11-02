@@ -10,7 +10,7 @@ import {Rutas} from '../../app/rute';
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
-export class Terms {
+export class Home {
 
   constructor(
     public http: Http,
@@ -18,9 +18,9 @@ export class Terms {
   ) {
   }
 
-  get(){
-    var url = this.rutas.terms();
-    var response = this.http.get(url).map(res => res.json());
+  location(token,data){
+    var url = this.rutas.location(token);
+    var response = this.http.post(url,data).map(res => res.json());
     return response;
 
   }

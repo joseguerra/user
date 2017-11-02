@@ -86,8 +86,16 @@ export class MyApp {
 
 
       else{
+        this.storage.get('token').then((val) => {
+          if(val){
+            this.rootPage = HomePage;
+          }
+          else{
+            this.rootPage = LoginPage;
+          }
+        });
         console.log("entre aqui")
-        this.rootPage = LoginPage;
+        
       }
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -139,6 +147,7 @@ export class MyApp {
             if(this.device.platform){
               this.delete();
             }
+            this.storage.set('token', "");
             this.nav.setRoot(LoginPage);
           }
         },

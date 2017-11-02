@@ -22,7 +22,7 @@ import {Rutas} from './rute';
 import {BdService} from './bd';
 import {Login} from '../pages/login/login.provider'; 
 import {Terms} from '../pages/terms/terms.provider';
-
+import {Home} from '../pages/home/home.provider';
 
 @NgModule({
   declarations: [
@@ -58,6 +58,7 @@ import {Terms} from '../pages/terms/terms.provider';
     Rutas,
     BdService,
     Terms,
+    Home,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -15,12 +15,12 @@ export class Rutas{
       return this.urlbase+ "api/v1/perfil/";
   }
 
+  terms(){
+      return this.urlbase+ "api/v1/terminos-api/";
+  }
 
-  trivias(token){
-    if(token){
-      return this.urlbase+ "trivias/?token={0}".replace("{0}", token) + "&d=" + new Date().getTime();
-    }
-    return this.urlbase+ "trivias" + "?d=" + new Date().getTime();;
+  location(token){
+      return this.urlbase+ "api/v1/ubicacion/?token={0}".replace("{0}", token);
   }
 
 
