@@ -26,6 +26,14 @@ export class Login {
     return response;
 
   }
+  logout(token){
+    let params = {};
+
+    var url = this.rutas.logout(token);
+    var response = this.http.post(url, params).map(res => res.json());
+    return response;
+
+  }
 
 
 }

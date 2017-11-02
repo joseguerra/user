@@ -7,7 +7,7 @@ import { HomePage } from '../pages/home/home';
 import {LoginPage} from '../pages/login/login';
 import { TermsPage } from '../pages/terms/terms';
 
-
+import {Login} from '../pages/login/login.provider'
 import { OneSignal } from '@ionic-native/onesignal';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
@@ -26,8 +26,8 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(public platform: Platform, 
-              public statusBar: StatusBar, 
+  constructor(public platform: Platform,
+              public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               private oneSignal: OneSignal,
               private device: Device,
@@ -35,6 +35,7 @@ export class MyApp {
               private storage: Storage,
               private sqlite: SQLite,
               private events: Events,
+              public login:Login,
               public alertCtrl: AlertController,
               ) {
     this.initializeApp();
@@ -49,13 +50,13 @@ export class MyApp {
           }
           else{
             this.pages = [
-              { title: 'Home', component: HomePage, icon: "ios-home-outline" },             
+              { title: 'Home', component: HomePage, icon: "ios-home-outline" },
             ];
           }
-      }) //...     
+      }) //...
 
     // used for an example of ngFor and navigation
-    
+
 
   }
 
@@ -76,9 +77,9 @@ export class MyApp {
         });
 
         this.oneSignal.endInit();
-        
+
         this.oneSignal.getIds().then((data)=>{
-          this.storage.set('onesignal_id', data.userId);  
+          this.storage.set('onesignal_id', data.userId);
         })
 
          this.createDatabase();
@@ -113,7 +114,7 @@ export class MyApp {
       return this.bdService.createTable();
     }).then(()=>{
       this.splashScreen.hide();
-      let row: number =this.bdService.select() 
+      let row: number =this.bdService.select()
       console.log(row)
       if(row == 0){
         console.log("entre aqui 2")
@@ -122,7 +123,7 @@ export class MyApp {
       else{
         console.log("entre aqui 3")
         this.rootPage = HomePage;
-      }                  
+      }
     })
     .catch(error =>{
       console.error(error);
@@ -131,9 +132,9 @@ export class MyApp {
 
   private delete(){
     this.storage.get('token').then((val) => {
-      this.bdService.delete(val) 
+      this.bdService.delete(val);
     });
-    
+
   }
 
   close() {
@@ -144,11 +145,33 @@ export class MyApp {
         {
           text: 'Cerrar',
           handler: data => {
-            if(this.device.platform){
-              this.delete();
-            }
-            this.storage.set('token', "");
-            this.nav.setRoot(LoginPage);
+
+            this.storage.get('token').then((val) => {
+              this.login.logout(val).subscribe(
+                data => {
+                  console.log(data);
+                  if(this.device.platform){
+                    this.delete();
+                  }
+                  this.nav.setRoot(LoginPage);
+                },
+                err => {
+                  console.error(err);
+                  let alerta = this.alertCtrl.create({
+                    title: 'Error al cerrar sesión',
+                    buttons: [
+                      {
+                        text: 'OK',
+                        handler: data => {
+                        }
+                      }
+                    ]
+                  });
+
+                  alerta.present();
+                }
+              );
+            });
           }
         },
         {
