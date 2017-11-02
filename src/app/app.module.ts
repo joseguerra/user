@@ -20,7 +20,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import {Rutas} from './rute';
 import {BdService} from './bd';
-import {Login} from '../pages/login/login.provider'; 
+import {Login} from '../pages/login/login.provider';
 import {Terms} from '../pages/terms/terms.provider';
 
 
@@ -37,7 +37,7 @@ import {Terms} from '../pages/terms/terms.provider';
     HttpClientModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
-    
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -51,7 +51,7 @@ import {Terms} from '../pages/terms/terms.provider';
     SplashScreen,
     OneSignal,
     SMS,
-    BackgroundGeolocation, 
+    BackgroundGeolocation,
     Device,
     SQLite,
     Login,
