@@ -6,6 +6,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import {LoginPage} from '../pages/login/login';
 import { TermsPage } from '../pages/terms/terms';
+import {ListPage} from '../pages/list/list';
+import {MapPage} from '../pages/map/map';
 
 import {Login} from '../pages/login/login.provider'
 import { OneSignal } from '@ionic-native/onesignal';
@@ -51,6 +53,8 @@ export class MyApp {
           else{
             this.pages = [
               { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+              { title: 'List', component: ListPage, icon: "ios-people-outline" },
+              { title: 'Ubication', component: MapPage, icon: "ios-navigate-outline" },
             ];
           }
       }) //...

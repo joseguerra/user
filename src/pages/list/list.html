@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar color='primary'>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Terminos y condiciones</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+      <button ion-item *ngFor="let item of items" (click)="map(item.id)">
+        {{ item.usuario_full_name }}
+      </button>  
+    </ion-list>
+
+</ion-content>

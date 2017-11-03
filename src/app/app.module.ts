@@ -7,6 +7,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { TermsPage } from '../pages/terms/terms';
 import { LoginPage } from '../pages/login/login';
+import {ListPage} from '../pages/list/list';
+import {MapPage} from '../pages/map/map';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,13 +25,17 @@ import {BdService} from './bd';
 import {Login} from '../pages/login/login.provider';
 import {Terms} from '../pages/terms/terms.provider';
 import {Home} from '../pages/home/home.provider';
+import {List} from '../pages/list/list.provider';
+import {Map} from '../pages/map/map.provider';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     TermsPage,
-    LoginPage
+    LoginPage,
+    ListPage,
+    MapPage
   ],
   imports: [
     BrowserModule,
@@ -45,6 +51,8 @@ import {Home} from '../pages/home/home.provider';
     HomePage,
     TermsPage,
     LoginPage,
+    ListPage,
+    MapPage
   ],
   providers: [
     StatusBar,
@@ -59,6 +67,8 @@ import {Home} from '../pages/home/home.provider';
     BdService,
     Terms,
     Home,
+    List,
+    Map,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
