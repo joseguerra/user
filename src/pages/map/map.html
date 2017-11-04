@@ -3,15 +3,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Terminos y condiciones</ion-title>
+    <ion-title>Map</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-      <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-        {{ item.usuario_full_name }}
-      </button>  
-    </ion-list>
+    <div #map id="map"></div>
 
 </ion-content>

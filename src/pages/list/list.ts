@@ -3,6 +3,7 @@ import { NavController, NavParams,LoadingController,AlertController } from 'ioni
 import {List} from './list.provider';
 import { Storage } from '@ionic/storage';
 import {MapPage} from '../map/map';
+import {DatePage} from '../date/date';
 
 @Component({
   selector: 'page-list',
@@ -62,7 +63,7 @@ export class ListPage {
 
   map(id){
     console.log(id)
-    this.navCtrl.push(MapPage, {'id':id});
+    this.navCtrl.push(DatePage, {'id':id});
 
   }
 

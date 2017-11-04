@@ -9,6 +9,7 @@ import { TermsPage } from '../pages/terms/terms';
 import { LoginPage } from '../pages/login/login';
 import {ListPage} from '../pages/list/list';
 import {MapPage} from '../pages/map/map';
+import {DatePage} from '../pages/date/date';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,6 +28,7 @@ import {Terms} from '../pages/terms/terms.provider';
 import {Home} from '../pages/home/home.provider';
 import {List} from '../pages/list/list.provider';
 import {Map} from '../pages/map/map.provider';
+import {Date} from '../pages/date/date.provider';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {Map} from '../pages/map/map.provider';
     TermsPage,
     LoginPage,
     ListPage,
-    MapPage
+    MapPage,
+    DatePage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ import {Map} from '../pages/map/map.provider';
     TermsPage,
     LoginPage,
     ListPage,
-    MapPage
+    MapPage,
+    DatePage
   ],
   providers: [
     StatusBar,
@@ -69,6 +73,7 @@ import {Map} from '../pages/map/map.provider';
     Home,
     List,
     Map,
+    Date,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

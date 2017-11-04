@@ -10,7 +10,7 @@ import {Rutas} from '../../app/rute';
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
-export class Map {
+export class Date {
 
   constructor(
     public http: Http,
@@ -19,14 +19,7 @@ export class Map {
   }
 
   get(token){
-    var url = this.rutas.hijos_ubicacion(token);
-    var response = this.http.get(url).map(res => res.json());
-    return response;
-
-  }
-
-  get_ubicaciones(token,id,inicio,fin){
-    var url = this.rutas.hijos_ubicaciones(token,id,inicio,fin);
+    var url = this.rutas.mis_hijos(token);
     var response = this.http.get(url).map(res => res.json());
     return response;
 

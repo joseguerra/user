@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar color='primary'>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Terminos y condiciones</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+      <ion-label>Start Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="start"></ion-datetime>
+    </ion-item>
+  <ion-item>
+      <ion-label>End Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="end"></ion-datetime>
+    </ion-item>
+  
+  <button ion-button block outline color="primary" (click)="send()">Enviar</button>
+
+
+</ion-content>
