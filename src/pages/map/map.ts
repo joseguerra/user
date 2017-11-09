@@ -2,6 +2,9 @@ import { Component,ViewChild } from '@angular/core';
 import { NavController, NavParams,LoadingController,AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import {Map} from './map.provider';
+
+declare var google; 
+
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html'
@@ -10,7 +13,7 @@ export class MapPage {
   @ViewChild('map') mapElement
   public items: any;
   map : any;
-
+  note: boolean = false;
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               private storage: Storage,
@@ -32,25 +35,32 @@ export class MapPage {
   }
 
   initMap(data){
-    let latLng = new google.maps.LatLng(data[0].latitud,data[0].longitud);
+    if(data.length==0){
+      this.note = true;
+    }
+    else{
+      let latLng = new google.maps.LatLng(data[0].latitud,data[0].longitud);
 
-    let mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeID: google.maps.MapTypeId.ROADMAP
+      let mapOptions = {
+        center: latLng,
+        zoom: 15,
+        mapTypeID: google.maps.MapTypeId.ROADMAP
+      }
+
+      this.map = new google.maps.Map(this.mapElement.nativeElement,mapOptions)
+      for(var i = 0; i<data.length;i++){
+        let LatLng = new google.maps.LatLng(data[i].latitud,data[i].longitud);
+        var marker = new google.maps.Marker({
+          map: this.map,
+          position: LatLng,
+          animation: google.maps.Animation.DROP,
+          label: data[i].usuario_full_name[0],
+          title: 'Hello World!'
+        });
+      }
     }
 
-    this.map = new google.maps.Map(this.mapElement.nativeElement,mapOptions)
-    for(var i = 0; i<data.length;i++){
-      let LatLng = new google.maps.LatLng(data[i].latitud,data[i].longitud);
-      var marker = new google.maps.Marker({
-        map: this.map,
-        position: LatLng,
-        animation: google.maps.Animation.DROP,
-        label: data[i].usuario_full_name[0],
-        title: 'Hello World!'
-      });
-    }
+    
     
 
   }

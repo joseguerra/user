@@ -53,8 +53,9 @@ export class MyApp {
           else{
             this.pages = [
               { title: 'Home', component: HomePage, icon: "ios-home-outline" },
-              { title: 'List', component: ListPage, icon: "ios-people-outline" },
-              { title: 'Ubication', component: MapPage, icon: "ios-navigate-outline" },
+              { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
+              { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
+              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" }
             ];
           }
       }) //...
@@ -91,6 +92,7 @@ export class MyApp {
 
 
       else{
+        console.log("aqui no puedo entrar")
         this.storage.get('token').then((val) => {
           if(val){
             this.rootPage = HomePage;
@@ -118,16 +120,21 @@ export class MyApp {
       return this.bdService.createTable();
     }).then(()=>{
       this.splashScreen.hide();
-      let row: number =this.bdService.select()
-      console.log(row)
-      if(row == 0){
-        console.log("entre aqui 2")
-        this.rootPage = LoginPage;
-      }
-      else{
-        console.log("entre aqui 3")
-        this.rootPage = HomePage;
-      }
+      this.bdService.select().then(tasks => {
+        console.log(tasks)
+        if(tasks.length == 0){
+          console.log("entre aqui 2")
+          this.rootPage = LoginPage;
+        }
+        else{
+          console.log("entre aqui 3")
+          this.rootPage = HomePage;
+        }
+      })
+      .catch( error => {
+        console.error( error );
+      });
+      
     })
     .catch(error =>{
       console.error(error);

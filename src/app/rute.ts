@@ -35,7 +35,18 @@ export class Rutas{
   }
 
   hijos_ubicaciones(token,hijo_perfil_id,inicio,fin ){
-      return this.urlbase+ "api/v1/ubicacion/hijos_ubicaciones/?token={0}".replace("{0}", token)+"&hijo_perfil_id={0}".replace("{0}", hijo_perfil_id)+"&inicio={0}".replace("{0}", inicio)+"&fin={0}".replace("{0}", fin);
+      var url = this.urlbase+ "api/v1/ubicacion/hijos_ubicaciones/?token={0}".replace("{0}", token)+"&hijo_perfil_id={0}".replace("{0}", hijo_perfil_id);
+      if(inicio){
+          url+= "&inicio={0}".replace("{0}", inicio)
+      }
+      if(fin){
+          url+= "&fin={0}".replace("{0}", fin);
+      }
+      return url;
+  }
+
+  telefono(token){
+      return this.urlbase+ "api/v1/get-admin-phone/?token={0}".replace("{0}", token);
   }
 
 

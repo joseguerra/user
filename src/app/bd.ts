@@ -35,15 +35,15 @@ export class BdService {
 
   select(){
     let sql = 'SELECT * FROM tasks';
-    this.db.executeSql(sql, [])
+    return this.db.executeSql(sql, [])
     .then(response => {
-      return response.rows.length
+      let tasks = [];
+      for (let index = 0; index < response.rows.length; index++) {
+        tasks.push( response.rows.item(index) );
+      }
+      return Promise.resolve( tasks );
     })
-    .catch(() =>{
-      return 0
-    });
-
-    return 0;
+    .catch(error => Promise.reject(error));
   }
 
 

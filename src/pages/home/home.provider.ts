@@ -25,6 +25,13 @@ export class Home {
 
   }
 
+  telefono(token){
+    var url = this.rutas.telefono(token);
+    var response = this.http.get(url).map(res => res.json());
+    return response;
+
+  }
+
 
 
 }

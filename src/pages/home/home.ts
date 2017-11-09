@@ -71,7 +71,19 @@ export class HomePage {
 
 
   sendSms(){
-
+    var telefono ;
+    this.storage.get('token').then((val) => {
+          this.home.telefono(val).subscribe(
+            data => {
+              telefono = data.telefono;
+              console.log(data)
+            },
+            err => {        
+              console.log(err)
+            }
+          );
+                   
+        });
     var options = {
         replaceLineBreaks: false, // true to replace \n by a new line, false by default
         android: {
@@ -81,7 +93,7 @@ export class HomePage {
         }
     };
 
-    this.sms.send('416123456', 'Hello world!',options);
+    this.sms.send(telefono, 'Hello world!',options);
   }
 
   
