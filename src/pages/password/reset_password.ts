@@ -4,6 +4,8 @@ import { NavController,LoadingController,AlertController } from 'ionic-angular';
 import {Login} from '../login/login.provider'
 import { Storage } from '@ionic/storage';
 import {ResetPasswordPageTwo} from './reset_password_two';
+import {HomePage} from '../home/home';
+
 @Component({
   selector: 'page-password',
   templateUrl: 'password.html'

@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 export class ResetPasswordPageTwo {
   public token: string;
   public password: string;
-  public passwprd_repeat: string;
+  public password_repeat: string;
 
   constructor(
     public navCtrl: NavController,
@@ -26,6 +26,7 @@ export class ResetPasswordPageTwo {
     });
     loading.present();
   }
+  
   send(){
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
