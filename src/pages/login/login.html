@@ -14,7 +14,7 @@
           <ion-input type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
         <ion-item>
-          <p><a>¿ Olvido su contraseña ?</a></p>
+          <p><a (click)="reset_pass()">Recuperar contraseña</a>/p>
         </ion-item>
         <button ion-button outline block color="danger" (click)="home()">Login</button>
       </ion-list>     

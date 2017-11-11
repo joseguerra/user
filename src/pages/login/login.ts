@@ -8,7 +8,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {BdService} from '../../app/bd';
 import { Device } from '@ionic-native/device';
 import { Events } from 'ionic-angular';
-
+import { PasswordPage} from '../pages/password/password';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -34,7 +34,9 @@ export class LoginPage {
       
 
   }
-
+  reset_pass() {
+    this.navCtrl.setRoot(ResetPasswordPage);
+  }
   home(){
 
     let loading = this.loadingCtrl.create({

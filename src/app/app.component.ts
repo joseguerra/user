@@ -8,6 +8,7 @@ import {LoginPage} from '../pages/login/login';
 import { TermsPage } from '../pages/terms/terms';
 import {ListPage} from '../pages/list/list';
 import {MapPage} from '../pages/map/map';
+import {PasswordPage} from '../pages/password/password';
 
 import {Login} from '../pages/login/login.provider'
 import { OneSignal } from '@ionic-native/onesignal';
@@ -16,7 +17,6 @@ import { Storage } from '@ionic/storage';
 import { SQLite } from '@ionic-native/sqlite';
 import {BdService} from './bd';
 import { Events } from 'ionic-angular';
-
 @Component({
   selector: 'page-app',
   templateUrl: 'app.html'
@@ -47,7 +47,8 @@ export class MyApp {
           if(group == "Cliente"){
             this.pages = [
               { title: 'Home', component: HomePage, icon: "ios-home-outline" },
-              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" }
+              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+              { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }
             ];
           }
           else{
@@ -55,7 +56,8 @@ export class MyApp {
               { title: 'Home', component: HomePage, icon: "ios-home-outline" },
               { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
               { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
-              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" }
+              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+              { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }
             ];
           }
       }) //...
@@ -102,7 +104,7 @@ export class MyApp {
           }
         });
         console.log("entre aqui")
-        
+
       }
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -134,7 +136,7 @@ export class MyApp {
       .catch( error => {
         console.error( error );
       });
-      
+
     })
     .catch(error =>{
       console.error(error);

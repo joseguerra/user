@@ -11,6 +11,10 @@ import {ListPage} from '../pages/list/list';
 import {MapPage} from '../pages/map/map';
 import {DatePage} from '../pages/date/date';
 import {UbicacionesPage} from '../pages/ubicaciones/ubicaciones'; 
+import { PasswordPage} from '../pages/password/password';
+import { ResetPasswordPage } from '../pages/password/reset_password';
+import { ResetPasswordPageTwo } from '../pages/password/reset_password_two';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -41,7 +45,10 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     ListPage,
     MapPage,
     DatePage,
-    UbicacionesPage
+    UbicacionesPage,
+    PasswordPage,
+    ResetPasswordPage,
+    ResetPasswordPageTwo
   ],
   imports: [
     BrowserModule,
@@ -60,7 +67,10 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     ListPage,
     MapPage,
     DatePage,
-    UbicacionesPage
+    UbicacionesPage,
+    PasswordPage,
+    ResetPasswordPage,
+    ResetPasswordPageTwo
   ],
   providers: [
     StatusBar,

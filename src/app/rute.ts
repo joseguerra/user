@@ -33,7 +33,12 @@ export class Rutas{
   hijos_ubicacion(token){
       return this.urlbase+ "api/v1/ubicacion/hijos_ubicacion/?token={0}".replace("{0}", token);
   }
-
+  change_password(token){
+    return this.urlbase+ "api/v1/change-password/?token={0}".replace("{0}", token);
+  }
+  reset_password(){
+    return this.urlbase+ "api/v1/reset-password/";
+  }
   hijos_ubicaciones(token,hijo_perfil_id,inicio,fin ){
       var url = this.urlbase+ "api/v1/ubicacion/hijos_ubicaciones/?token={0}".replace("{0}", token)+"&hijo_perfil_id={0}".replace("{0}", hijo_perfil_id);
       if(inicio){
