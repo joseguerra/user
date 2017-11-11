@@ -6,7 +6,17 @@
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
+  
+<ion-content padding class="vertical-align-content back">
+    <button ion-button color="danger" icon-left class="boton">
+      <ion-icon name="ios-call-outline"></ion-icon>
+      LLamar
+    </button>
 
-<ion-content padding class="vertical-align-content">
-    <img  src="assets/img/image.png" (click)="sendSms()"/>
+      <img  src="assets/img/image.png" (click)="sendSms()"/>
+    <button ion-button block color="danger" class="boton2" icon-left>
+     <ion-icon name="ios-chatboxes-outline"></ion-icon>
+     Mensajes      
+   </button>
+    
 </ion-content>

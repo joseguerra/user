@@ -5,6 +5,7 @@ import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocati
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import {Home} from './home.provider';
+import {Ubicaciones} from '../ubicaciones/ubicaciones.provider';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -16,6 +17,7 @@ export class HomePage {
               private storage: Storage,
               private backgroundGeolocation: BackgroundGeolocation,
               private home:Home,
+              private ubicaciones:Ubicaciones,
               private device: Device) {                  
 
     storage.get('token').then((val) => {
@@ -34,25 +36,41 @@ export class HomePage {
       this.backgroundGeolocation.configure(config)
       .subscribe((location: BackgroundGeolocationResponse) => {
 
-        var data = {
-          latitud: location.latitude,
-          longitud: location.longitude,
-          fecha: Date.now()
-        }
-
-        storage.get('token').then((val) => {
-          this.home.location(val,data).subscribe(
-            data => {
-              console.log(data)
-            },
-            err => {        
-              console.log(err)
-            }
-          );
-                   
-        });
+        var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + location.latitude + ',' + location.longitude + '&sensor=false';       
         
-        console.log(location);        
+        this.ubicaciones.get(geocoding).subscribe(
+        location => {
+          console.log(location)
+
+          var data = {
+            latitud: location.latitude,
+            longitud: location.longitude,
+            fecha: Date.now(),
+            formatted_address: location.results[0].formatted_address
+
+          }
+
+          storage.get('token').then((val) => {
+            this.home.location(val,data).subscribe(
+              data => {
+                console.log(data)
+              },
+              err => {        
+                console.log(err)
+              }
+            );
+                    
+          });
+          
+          console.log(location);     
+
+          },
+          err => {        
+            console.log(err)
+          })
+
+
+           
         // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
         // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
         // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.

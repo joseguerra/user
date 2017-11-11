@@ -10,6 +10,7 @@ import { LoginPage } from '../pages/login/login';
 import {ListPage} from '../pages/list/list';
 import {MapPage} from '../pages/map/map';
 import {DatePage} from '../pages/date/date';
+import {UbicacionesPage} from '../pages/ubicaciones/ubicaciones'; 
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,6 +30,7 @@ import {Home} from '../pages/home/home.provider';
 import {List} from '../pages/list/list.provider';
 import {Map} from '../pages/map/map.provider';
 import {Date} from '../pages/date/date.provider';
+import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import {Date} from '../pages/date/date.provider';
     LoginPage,
     ListPage,
     MapPage,
-    DatePage
+    DatePage,
+    UbicacionesPage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,8 @@ import {Date} from '../pages/date/date.provider';
     LoginPage,
     ListPage,
     MapPage,
-    DatePage
+    DatePage,
+    UbicacionesPage
   ],
   providers: [
     StatusBar,
@@ -74,6 +78,7 @@ import {Date} from '../pages/date/date.provider';
     List,
     Map,
     Date,
+    Ubicaciones,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

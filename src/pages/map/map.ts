@@ -2,6 +2,7 @@ import { Component,ViewChild } from '@angular/core';
 import { NavController, NavParams,LoadingController,AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import {Map} from './map.provider';
+import {UbicacionesPage} from '../ubicaciones/ubicaciones';
 
 declare var google; 
 
@@ -14,6 +15,7 @@ export class MapPage {
   public items: any;
   map : any;
   note: boolean = false;
+  ubication: boolean = true;
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               private storage: Storage,
@@ -30,6 +32,7 @@ export class MapPage {
       this.get_ubicaciones(this.navParams.get('id'),this.navParams.get('start'),this.navParams.get('end'));
     }    
     else{
+      this.ubication = false;
       this.get();               
     }
   }
@@ -142,6 +145,10 @@ export class MapPage {
       }
     );
     });    
+  }
+
+  ubicaciones(){
+    this.navCtrl.push(UbicacionesPage, {'id':this.navParams.get('id'),'start':this.navParams.get('start'),'end':this.navParams.get('end')});
   }
 
 

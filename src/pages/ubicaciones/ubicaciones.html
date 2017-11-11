@@ -3,16 +3,17 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Map</ion-title>
-    <ion-buttons end *ngIf="ubication">
-      <button ion-button icon-only (click)="ubicaciones()">
-        <ion-icon name='ios-navigate-outline'></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-title>Ubicaciones</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <div *ngIf="note" class="center"><h1 > No hay ubicaciones</h1></div>
-    <div #map id="map"></div>
+    <ion-list>
+      <ion-item *ngFor="let item of items">
+        <h2>{{item.formatted_address}}</h2>
+        <p>{{item.dia}} - {{item.hora}}</p>
+      </ion-item>
+    </ion-list>
+
 </ion-content>
