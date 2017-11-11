@@ -32,6 +32,12 @@ export class Home {
 
   }
 
+  sendMessage(token,message){
+    var url = this.rutas.location(token);
+    var response = this.http.post(url,message).map(res => res.json());
+    return response;
+  }
+
 
 
 }

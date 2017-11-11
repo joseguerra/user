@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,AlertController,LoadingController } from 'ionic-angular';
 import { SMS } from '@ionic-native/sms';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 import { Device } from '@ionic-native/device';
@@ -17,7 +17,9 @@ export class HomePage {
               private storage: Storage,
               private backgroundGeolocation: BackgroundGeolocation,
               private home:Home,
+              public alertCtrl: AlertController,
               private ubicaciones:Ubicaciones,
+              public loadingCtrl: LoadingController,
               private device: Device) {                  
 
     storage.get('token').then((val) => {
@@ -112,6 +114,67 @@ export class HomePage {
     };
 
     this.sms.send(telefono, 'Hello world!',options);
+  }
+
+  sendMensaje(mensaje){
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loading.present();
+    this.storage.get('token').then((val) => {
+          this.home.sendMessage(val,mensaje).subscribe(
+            data => {   
+              loading.dismiss();           
+              let alert = this.alertCtrl.create({
+                title: 'Perfecto!',
+                subTitle: 'Mensaje enviado con exito!',
+                buttons: ['OK']
+              });
+              alert.present();
+            },
+            err => {   
+              loading.dismiss();     
+              let alert = this.alertCtrl.create({
+                title: 'Error!',
+                subTitle: 'revise su red!',
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+          );
+                   
+        });
+  }
+
+  sendMessage(){
+    
+    let prompt = this.alertCtrl.create({
+      title: 'Mensaje',
+      message: "Ingrese el mensaje a enviar al admin",
+      inputs: [
+        {
+          name: 'mensaje',
+          placeholder: 'Mensaje'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Enviar',
+          handler: data => {
+            this.sendMensaje(data.mensaje);
+            console.log(data.mensaje);
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   
