@@ -8,7 +8,9 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {BdService} from '../../app/bd';
 import { Device } from '@ionic-native/device';
 import { Events } from 'ionic-angular';
-import { PasswordPage} from '../pages/password/password';
+import { PasswordPage} from '../password/password';
+import {ResetPasswordPage} from '../password/reset_password';
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
