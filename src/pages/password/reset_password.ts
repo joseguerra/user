@@ -5,10 +5,11 @@ import {Login} from '../login/login.provider'
 import { Storage } from '@ionic/storage';
 import {ResetPasswordPageTwo} from './reset_password_two';
 import {HomePage} from '../home/home';
+import {LoginPage} from '../login/login';
 
 @Component({
-  selector: 'page-password',
-  templateUrl: 'password.html'
+  selector: 'page-rest-password',
+  templateUrl: 'reset_password.html'
 })
 export class ResetPasswordPage {
   public correo: string;
@@ -21,10 +22,7 @@ export class ResetPasswordPage {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
+
   }
   send(){
     let loading = this.loadingCtrl.create({
@@ -45,7 +43,8 @@ export class ResetPasswordPage {
     this.login.reset_password_one(this.correo).subscribe(
       data => {
         loading.dismiss();
-        if (data.success){
+        console.log(data);
+        if (data[0].success){
           this.navCtrl.setRoot(ResetPasswordPageTwo);
         }
         else{
@@ -54,9 +53,9 @@ export class ResetPasswordPage {
             subTitle: 'Correo o usuario incorrecto',
             buttons: [{
               text:'OK',
-              handler: () => {
-                this.navCtrl.setRoot(HomePage);
-              }
+              // handler: () => {
+                // this.navCtrl.setRoot(LoginPage);
+              // }
             }]
           });
           alert.present();

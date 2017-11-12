@@ -46,7 +46,7 @@ export class Login {
   reset_password_one(correo){
     let params = { username: correo};
 
-    var url = this.rutas.reset_password()+"?username="+correo;
+    var url = this.rutas.reset_password()+"?email="+correo;
     var response = this.http.get(url,params).map(res => res.json());
     return response;
 

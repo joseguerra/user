@@ -5,8 +5,8 @@ import {Login} from '../login/login.provider'
 import {LoginPage} from '../login/login'
 import { Storage } from '@ionic/storage';
 @Component({
-  selector: 'page-password',
-  templateUrl: 'password.html'
+  selector: 'page-reset-password-two',
+  templateUrl: 'reset_password_two.html'
 })
 export class ResetPasswordPageTwo {
   public token: string;
@@ -21,12 +21,8 @@ export class ResetPasswordPageTwo {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
   }
-  
+
   send(){
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -46,7 +42,7 @@ export class ResetPasswordPageTwo {
     this.login.reset_password_two(this.token, this.password).subscribe(
       data => {
         loading.dismiss();
-        if (data.success){
+        if (data[0].success){
           this.navCtrl.setRoot(LoginPage);
         }
         else{
