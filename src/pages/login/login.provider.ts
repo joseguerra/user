@@ -51,11 +51,13 @@ export class Login {
     return response;
 
   }
-  reset_password_two(token, pass){
-    let params = { new_password: pass, token: token};
+  // reset_password_two(token, pass){
+  reset_password_two(email, pass){
+    // let params = { new_password: pass, token: token};
+    let params = { new_password: pass, email: email};
 
     var url = this.rutas.reset_password();
-    var response = this.http.get(url,params).map(res => res.json());
+    var response = this.http.post(url,params).map(res => res.json());
     return response;
 
   }

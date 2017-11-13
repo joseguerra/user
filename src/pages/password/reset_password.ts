@@ -40,26 +40,33 @@ export class ResetPasswordPage {
       alert.present();
       return;
     }
+    this.storage.set("email", this.correo);
+    this.navCtrl.setRoot(ResetPasswordPageTwo);
+    loading.dismiss();
+    /*
     this.login.reset_password_one(this.correo).subscribe(
       data => {
         loading.dismiss();
         console.log(data);
-        if (data[0].success){
-          this.navCtrl.setRoot(ResetPasswordPageTwo);
-        }
-        else{
-          let alert = this.alertCtrl.create({
-            title: 'Error',
-            subTitle: 'Correo o usuario incorrecto',
-            buttons: [{
-              text:'OK',
-              // handler: () => {
-                // this.navCtrl.setRoot(LoginPage);
-              // }
-            }]
-          });
-          alert.present();
-        }
+        this.navCtrl.setRoot(ResetPasswordPageTwo);
+        this.storage.set("email", this.correo);
+        ///////////////////////////////////////////
+        // if (data[0].success){
+        //   this.navCtrl.setRoot(ResetPasswordPageTwo);
+        // }
+        // else{
+        //   let alert = this.alertCtrl.create({
+        //     title: 'Error',
+        //     subTitle: 'Correo o usuario incorrecto',
+        //     buttons: [{
+        //       text:'OK',
+        //       // handler: () => {
+        //         // this.navCtrl.setRoot(LoginPage);
+        //       // }
+        //     }]
+        //   });
+        //   alert.present();
+        // }
       },
       err => {
         if(err.status == 400){
@@ -81,6 +88,6 @@ export class ResetPasswordPage {
             alert.present();
         }
       }
-    );
+    );*/
   }
 }

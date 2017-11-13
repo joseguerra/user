@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
 })
 export class ResetPasswordPageTwo {
   public token: string;
+  public correo: string;
   public password: string;
   public password_repeat: string;
 
@@ -21,6 +22,14 @@ export class ResetPasswordPageTwo {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
+    storage.get("email").then((val) => {
+      this.correo = val;
+      loading.dismiss();
+    });
   }
 
   send(){
@@ -39,11 +48,22 @@ export class ResetPasswordPageTwo {
       alert.present();
       return;
     }
-    this.login.reset_password_two(this.token, this.password).subscribe(
+    // this.login.reset_password_two(this.token, this.password).subscribe(
+    this.login.reset_password_two(this.correo, this.password).subscribe(
       data => {
         loading.dismiss();
         if (data[0].success){
-          this.navCtrl.setRoot(LoginPage);
+          let alert = this.alertCtrl.create({
+            title: 'OK',
+            subTitle: 'Contraseña cambiada satisfactoriamente',
+            buttons: [{
+              text:'OK',
+              handler: () => {
+                this.navCtrl.setRoot(LoginPage);
+              }
+            }]
+          });
+          alert.present();
         }
         else{
           let alert = this.alertCtrl.create({
