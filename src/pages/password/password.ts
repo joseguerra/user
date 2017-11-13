@@ -59,17 +59,29 @@ export class PasswordPage {
     this.login.change_password(this.username,this.old_password,this.new_password, this.token).subscribe(
       data => {
         loading.dismiss();
-        let alert = this.alertCtrl.create({
-          title: 'Error',
-          subTitle: 'Las contraseñas no coinciden',
-          buttons: [{
-            text:'OK',
-            handler: () => {
-              this.navCtrl.setRoot(HomePage);
-            }
-        }]
-        });
-        alert.present();
+        if (data[0].success){
+          let alert = this.alertCtrl.create({
+            title: 'OK',
+            subTitle: 'Contraseña Cambiada exitosamente',
+            buttons: [{
+              text:'OK',
+              handler: () => {
+                this.navCtrl.setRoot(HomePage);
+              }
+          }]
+          });
+          alert.present();
+        }
+        else{
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: 'Las contraseñas no coinciden',
+            buttons: [{
+              text:'OK'
+            }]
+          });
+          alert.present();
+        }
       },
       err => {
         if(err.status == 400){
