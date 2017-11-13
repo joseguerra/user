@@ -54,5 +54,11 @@ export class Rutas{
       return this.urlbase+ "api/v1/get-admin-phone/?token={0}".replace("{0}", token);
   }
 
+  sendMessage(token){
+      return this.urlbase+ "api/v1/mensajes/?token={0}".replace("{0}", token);
+  }
+
+  
+
 
 }

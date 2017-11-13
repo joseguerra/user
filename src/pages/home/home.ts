@@ -168,8 +168,13 @@ export class HomePage {
         {
           text: 'Enviar',
           handler: data => {
-            this.sendMensaje(data.mensaje);
-            console.log(data.mensaje);
+            var datos = {              
+              mensaje: data.mensaje,
+              usuario: 1
+            }
+
+            this.sendMensaje(datos);
+            console.log(datos);
           }
         }
       ]
