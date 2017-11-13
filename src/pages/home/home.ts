@@ -6,12 +6,17 @@ import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import {Home} from './home.provider';
 import {Ubicaciones} from '../ubicaciones/ubicaciones.provider';
+import { CallNumber } from '@ionic-native/call-number';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-
+  public telefono: string;
+  public latitud: number;
+  public longitud: number;
+  public ubicacion: string;
   constructor(public navCtrl: NavController,
               private sms: SMS,
               private storage: Storage,
@@ -20,11 +25,20 @@ export class HomePage {
               public alertCtrl: AlertController,
               private ubicaciones:Ubicaciones,
               public loadingCtrl: LoadingController,
+              private callNumber: CallNumber,
               private device: Device) {                  
 
-    storage.get('token').then((val) => {
-      console.log('Your token is', val);
-    });
+        this.storage.get('token').then((val) => {
+          this.home.servicios(val).subscribe(
+            data => {
+              console.log(data)
+            },
+            err => {        
+              console.log(err)
+            }
+          );
+                   
+        });
 
     if(this.device.platform){
 
@@ -37,13 +51,14 @@ export class HomePage {
       };
       this.backgroundGeolocation.configure(config)
       .subscribe((location: BackgroundGeolocationResponse) => {
-
+        this.latitud = location.latitude;
+        this.longitud = location.longitude;
         var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + location.latitude + ',' + location.longitude + '&sensor=false';       
         
         this.ubicaciones.get(geocoding).subscribe(
         location => {
           console.log(location)
-
+          this.ubicacion =location.results[0].formatted_address;
           var data = {
             latitud: location.latitude,
             longitud: location.longitude,
@@ -89,31 +104,73 @@ export class HomePage {
 
   }
 
+  call(){
+    this.callNumber.callNumber(this.telefono, true)
+    .then(() => console.log('Launched dialer!'))
+    .catch(() => console.log('Error launching dialer'));
+  }
+
 
   sendSms(){
-    var telefono ;
-    this.storage.get('token').then((val) => {
-          this.home.telefono(val).subscribe(
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loading.present();
+    var data = {
+      latitud: 8.597175,
+      longitud: -71.15824500000001,
+      ubicacion: "Mérida",
+      tipo: "Pn"
+
+    }
+      console.log(data);
+
+        this.storage.get('token').then((val) => {
+
+          this.home.alertas(val,data).subscribe(
             data => {
-              telefono = data.telefono;
               console.log(data)
+
+              this.home.telefono(val).subscribe(
+                data => {
+                  this.telefono = data.telefono;
+                  var options = {
+                    replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                    android: {
+                        intent: 'INTENT' // send SMS with the native android SMS messaging
+                            //intent: '' // send SMS without open any other app
+                            //intent: 'INTENT' // send SMS inside a default SMS app
+                    }
+                  };
+
+                  this.sms.send(this.telefono, 'Hello world!',options);
+                },
+                err => {        
+                  console.log(err)
+                }
+              );
+
+              loading.dismiss();           
+              let alert = this.alertCtrl.create({
+                title: 'Perfecto!',
+                subTitle: 'Mensaje enviado con exito!',
+                buttons: ['OK']
+              });
+              alert.present();
             },
             err => {        
-              console.log(err)
+              loading.dismiss();     
+              let alert = this.alertCtrl.create({
+                title: 'Error!',
+                subTitle: 'revise su red!',
+                buttons: ['OK']
+              });
+              alert.present();
             }
           );
-                   
         });
-    var options = {
-        replaceLineBreaks: false, // true to replace \n by a new line, false by default
-        android: {
-            intent: 'INTENT' // send SMS with the native android SMS messaging
-                //intent: '' // send SMS without open any other app
-                //intent: 'INTENT' // send SMS inside a default SMS app
-        }
-    };
-
-    this.sms.send(telefono, 'Hello world!',options);
+    
   }
 
   sendMensaje(mensaje){

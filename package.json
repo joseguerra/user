@@ -21,6 +21,7 @@
     "@angular/platform-browser": "4.4.3",
     "@angular/platform-browser-dynamic": "4.4.3",
     "@ionic-native/background-geolocation": "^4.3.2",
+    "@ionic-native/call-number": "^4.4.0",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/device": "^4.3.2",
     "@ionic-native/onesignal": "^4.3.2",
@@ -30,6 +31,7 @@
     "@ionic-native/status-bar": "4.3.2",
     "@ionic/storage": "2.0.1",
     "@types/google-maps": "^3.2.0",
+    "call-number": "^1.0.1",
     "cordova-android": "^6.3.0",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-ionic-webview": "^1.1.16",
@@ -62,7 +64,8 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "mx.ferreyra.callnumber": {}
     },
     "platforms": [
       "android"

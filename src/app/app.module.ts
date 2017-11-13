@@ -23,6 +23,7 @@ import { SMS } from '@ionic-native/sms';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Device } from '@ionic-native/device';
 import { SQLite } from '@ionic-native/sqlite';
+import { CallNumber } from '@ionic-native/call-number';
 import { IonicStorageModule } from '@ionic/storage';
 /*Providers*/
 
@@ -80,6 +81,7 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     BackgroundGeolocation,
     Device,
     SQLite,
+    CallNumber,
     Login,
     Rutas,
     BdService,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http,Headers,RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Rutas} from '../../app/rute';
 
@@ -25,8 +25,22 @@ export class Home {
 
   }
 
+  alertas(token,data){
+    var url = this.rutas.alertas(token);
+    var response = this.http.post(url,data).map(res => res.json());
+    return response;
+
+  }
+
   telefono(token){
     var url = this.rutas.telefono(token);
+    var response = this.http.get(url).map(res => res.json());
+    return response;
+
+  }
+
+  servicios(token){
+    var url = this.rutas.servicios(token);
     var response = this.http.get(url).map(res => res.json());
     return response;
 
