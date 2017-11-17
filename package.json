@@ -21,9 +21,11 @@
     "@angular/platform-browser": "4.4.3",
     "@angular/platform-browser-dynamic": "4.4.3",
     "@ionic-native/background-geolocation": "^4.3.2",
+    "@ionic-native/background-mode": "^4.4.2",
     "@ionic-native/call-number": "^4.4.0",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/device": "^4.3.2",
+    "@ionic-native/geolocation": "^4.4.2",
     "@ionic-native/onesignal": "^4.3.2",
     "@ionic-native/sms": "^4.3.2",
     "@ionic-native/splash-screen": "4.3.2",
@@ -33,7 +35,9 @@
     "@types/google-maps": "^3.2.0",
     "call-number": "^1.0.1",
     "cordova-android": "^6.3.0",
+    "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-geolocation": "^3.0.0",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-mauron85-background-geolocation": "^2.2.5",
     "cordova-plugin-splashscreen": "^4.0.3",
@@ -43,6 +47,7 @@
     "ionic-angular": "3.7.1",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
+    "mx.ferreyra.callnumber": "~0.0.2",
     "onesignal-cordova-plugin": "^2.2.2",
     "rxjs": "5.4.3",
     "sw-toolbox": "3.6.0",
@@ -65,7 +70,11 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-sqlite-storage": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "cordova-plugin-geolocation": {
+        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
+      },
+      "cordova-plugin-background-mode": {}
     },
     "platforms": [
       "android"

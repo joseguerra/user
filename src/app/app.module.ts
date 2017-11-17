@@ -14,7 +14,7 @@ import {UbicacionesPage} from '../pages/ubicaciones/ubicaciones';
 import { PasswordPage} from '../pages/password/password';
 import { ResetPasswordPage } from '../pages/password/reset_password';
 import { ResetPasswordPageTwo } from '../pages/password/reset_password_two';
-
+import {NotificationPage} from '../pages/notification/notification';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,6 +25,8 @@ import { Device } from '@ionic-native/device';
 import { SQLite } from '@ionic-native/sqlite';
 import { CallNumber } from '@ionic-native/call-number';
 import { IonicStorageModule } from '@ionic/storage';
+import { Geolocation } from '@ionic-native/geolocation';
+import { BackgroundMode } from '@ionic-native/background-mode';
 /*Providers*/
 
 import {Rutas} from './rute';
@@ -34,7 +36,6 @@ import {Terms} from '../pages/terms/terms.provider';
 import {Home} from '../pages/home/home.provider';
 import {List} from '../pages/list/list.provider';
 import {Map} from '../pages/map/map.provider';
-import {Date} from '../pages/date/date.provider';
 import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
 
 @NgModule({
@@ -49,7 +50,8 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     UbicacionesPage,
     PasswordPage,
     ResetPasswordPage,
-    ResetPasswordPageTwo
+    ResetPasswordPageTwo,
+    NotificationPage
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     UbicacionesPage,
     PasswordPage,
     ResetPasswordPage,
-    ResetPasswordPageTwo
+    ResetPasswordPageTwo,
+    NotificationPage
   ],
   providers: [
     StatusBar,
@@ -81,6 +84,7 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     BackgroundGeolocation,
     Device,
     SQLite,
+    Geolocation,
     CallNumber,
     Login,
     Rutas,
@@ -89,8 +93,8 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     Home,
     List,
     Map,
-    Date,
     Ubicaciones,
+    BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

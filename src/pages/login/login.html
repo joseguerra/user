@@ -1,23 +1,21 @@
-<ion-content class="background">  
-  <ion-card>
-    <ion-card-header>
-      Guaruras
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list no-lines>
-        <ion-item>
-          <ion-label floating>Usuario</ion-label>
-          <ion-input type="text" [(ngModel)]="username"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="password"></ion-input>
-        </ion-item>
-        <ion-item>
-          <p><a (click)="reset_pass()">Recuperar contraseña</a></p>
-        </ion-item>
-        <button ion-button outline block color="danger" (click)="home()">Login</button>
-      </ion-list>     
-    </ion-card-content>
-  </ion-card>
+<ion-content padding>  
+        
+        <ion-list>
+          <ion-item>
+            <ion-label floating>Usuario</ion-label>
+            <ion-input type="text" [(ngModel)]="username"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label floating>Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="password"></ion-input>
+          </ion-item>
+          <br/>
+          <ion-item>
+            <p><a (click)="reset_pass()">Recuperar contraseña</a></p>
+          </ion-item>
+          <br/>
+          <button ion-button block color="primary" (click)="home()">Login</button>
+        </ion-list>    
+
 </ion-content>

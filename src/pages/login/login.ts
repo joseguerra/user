@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NavController,LoadingController,AlertController } from 'ionic-angular';
+import { NavController,LoadingController,AlertController,Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import {HomePage } from '../home/home';
 import {Login} from './login.provider'
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {BdService} from '../../app/bd';
 import { Device } from '@ionic-native/device';
-import { Events } from 'ionic-angular';
-import { PasswordPage} from '../password/password';
 import {ResetPasswordPage} from '../password/reset_password';
 
 @Component({
@@ -24,20 +21,19 @@ export class LoginPage {
               public alertCtrl: AlertController,
               private bdService:BdService,
               private storage: Storage,
-              private sqlite: SQLite,
               private device: Device,
               private events: Events,
               public login:Login             
               ) {
     storage.get('onesignal_id').then((val) => {
       this.onesignal_id = val;
-      console.log('Your token is', val);
+      console.log('Your onesignal_id is', val);
     });
       
 
   }
   reset_pass() {
-    this.navCtrl.setRoot(ResetPasswordPage);
+    this.navCtrl.push(ResetPasswordPage);
   }
   home(){
 
@@ -49,10 +45,11 @@ export class LoginPage {
 
     this.login.login(this.username,this.password,this.onesignal_id).subscribe(
       data => {
-        console.log(data)
-        this.events.publish('group:changed', data.group);
+        
+        console.log(data)        
         if(this.device.platform){
           this.create(data.token);
+          this.createMenu(data.group);
         }
         this.storage.set('token', data.token);
         this.storage.set('perfil_id', data.perfil_id);
@@ -85,6 +82,13 @@ export class LoginPage {
   create(token){    
       this.bdService.create(token).then((data)=>{
         console.log(data)
+      }) 
+  }
+
+  createMenu(menu){    
+      this.bdService.createMenu(menu).then((data)=>{
+        console.log(data)
+        this.events.publish('group:changed', data.group);
       }) 
   }
 

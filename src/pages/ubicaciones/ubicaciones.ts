@@ -30,6 +30,9 @@ export class UbicacionesPage {
       this.get_ubicaciones(this.navParams.get('id'),this.navParams.get('start'),this.navParams.get('end'));
   }
 
+
+
+
   get_ubicaciones(id,inicio,fin) {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'

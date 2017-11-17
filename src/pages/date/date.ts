@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,LoadingController,AlertController } from 'ionic-angular';
-import {Date} from './date.provider';
-import { Storage } from '@ionic/storage';
+import { NavController, NavParams } from 'ionic-angular';
 import {MapPage} from '../map/map';
 
 @Component({
@@ -14,11 +12,7 @@ export class DatePage {
 
 
   constructor(public navCtrl: NavController, 
-              public navParams: NavParams,
-              private storage: Storage,
-              public loadingCtrl: LoadingController,
-              public alertCtrl: AlertController,
-              public date:Date) {
+              public navParams: NavParams) {
 
          
   }

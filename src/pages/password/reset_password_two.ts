@@ -26,7 +26,7 @@ export class ResetPasswordPageTwo {
       content: 'Please wait...'
     });
     loading.present();
-    storage.get("email").then((val) => {
+    this.storage.get("email").then((val) => {
       this.correo = val;
       loading.dismiss();
     });

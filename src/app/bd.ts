@@ -28,13 +28,42 @@ export class BdService {
     return this.db.executeSql(sql, []);
   }
 
-  delete(token: any){
-    let sql = 'DELETE FROM tasks WHERE token=?';
-    return this.db.executeSql(sql, [token]);
-  }
+  delete(){
+    let sql = 'DELETE FROM tasks';
+    return this.db.executeSql(sql, []);
+  }  
 
   select(){
     let sql = 'SELECT * FROM tasks';
+    return this.db.executeSql(sql, [])
+    .then(response => {
+      let tasks = [];
+      for (let index = 0; index < response.rows.length; index++) {
+        tasks.push( response.rows.item(index) );
+      }
+      return Promise.resolve( tasks );
+    })
+    .catch(error => Promise.reject(error));
+  }
+
+
+  createMenu(menu: any){
+    let sql = 'INSERT INTO menu(menu) VALUES(?)';
+    return this.db.executeSql(sql, [menu]);
+  }
+
+  createTableMenu(){
+    let sql = 'CREATE TABLE IF NOT EXISTS menu(id INTEGER PRIMARY KEY AUTOINCREMENT, menu TEXT)';
+    return this.db.executeSql(sql, []);
+  }
+
+  deleteMenu(){
+    let sql = 'DELETE FROM menu';
+    return this.db.executeSql(sql, []);
+  }
+
+  selectMenu(){
+    let sql = 'SELECT menu FROM menu';
     return this.db.executeSql(sql, [])
     .then(response => {
       let tasks = [];

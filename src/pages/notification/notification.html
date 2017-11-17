@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar color='primary'>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Alerta</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>    
+    <ion-list>
+      <ion-item>       
+        <h2>Usuario: {{usuario}}</h2>
+        <h3>Alerta: {{tipo_alerta}}</h3>
+        <p>Ubicacion: {{ubicacion}}</p>
+      </ion-item>
+    </ion-list>
+
+    <div #map id="map"></div>
+</ion-content>

@@ -21,5 +21,11 @@ Then, to run it, cd into `mySideMenu` and run:
 $ ionic cordova platform add ios
 $ ionic cordova run ios
 ```
+one signal
+rudmanmrrod@gmail.com
+rudman22
 
+admin
+admin_exclusivo_para_jose
+TirameAlgoJosePorFavor
 Substitute ios for android if not on a Mac.

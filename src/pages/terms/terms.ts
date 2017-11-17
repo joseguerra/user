@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams,LoadingController,AlertController } from 'ionic-angular';
 import {Terms} from './terms.provider';
-import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-terms',
@@ -13,7 +12,6 @@ export class TermsPage {
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              private storage: Storage,
               public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
               public terms:Terms) {

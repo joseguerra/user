@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController } from 'ionic-angular';
+import { Nav, Platform, AlertController,NavController,Events  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -16,19 +16,21 @@ import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { SQLite } from '@ionic-native/sqlite';
 import {BdService} from './bd';
-import { Events } from 'ionic-angular';
+import {NotificationPage} from '../pages/notification/notification';
+
 @Component({
   selector: 'page-app',
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  @ViewChild(NavController) navController: NavController;
 
   rootPage: any = ""
-
+  group: string;
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(public platform: Platform,
+  constructor(public platform: Platform,              
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               private oneSignal: OneSignal,
@@ -36,51 +38,29 @@ export class MyApp {
               private bdService:BdService,
               private storage: Storage,
               private sqlite: SQLite,
-              private events: Events,
               public login:Login,
+              public events: Events,
               public alertCtrl: AlertController,
               ) {
     this.initializeApp();
-
-      events.subscribe('group:changed', group => {
-        console.log(group)
-          if(group == "Cliente"){
-            this.pages = [
-              { title: 'Home', component: HomePage, icon: "ios-home-outline" },
-              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
-              { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }
-            ];
-          }
-          else{
-            this.pages = [
-              { title: 'Home', component: HomePage, icon: "ios-home-outline" },
-              { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
-              { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
-              { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
-              { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }
-            ];
-          }
-      }) //...
-
-    // used for an example of ngFor and navigation
-
-
+    this.createDatabaseMenu();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       if(this.device.platform){
+        console.log("aqui si puedo entrar")
         this.oneSignal.startInit('84d86d4d-5c55-4653-9ff5-3eafd056cdd4', '1022113476844');
 
-        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);        
 
-        this.oneSignal.handleNotificationReceived().subscribe((data) => {
-          console.log(data)
-          console.log("notificacion recibida")
-        });
-
-        this.oneSignal.handleNotificationOpened().subscribe(() => {
-          console.log("notificacion abierta")
+        this.oneSignal.handleNotificationOpened().subscribe((data) => {                   
+          console.log(data);
+          this.nav.setRoot(NotificationPage, {'ubicacion':data.notification.payload.additionalData.ubicacion,
+                                      'usuario':data.notification.payload.additionalData.usuario,
+                                      'latitud':data.notification.payload.additionalData.latitud,
+                                      'longitud':data.notification.payload.additionalData.longitud,
+                                      'tipo_alerta':data.notification.payload.additionalData.tipo_alerta});          
         });
 
         this.oneSignal.endInit();
@@ -95,16 +75,14 @@ export class MyApp {
 
       else{
         console.log("aqui no puedo entrar")
-        this.storage.get('token').then((val) => {
+        this.storage.get('token').then((val) => {          
           if(val){
             this.rootPage = HomePage;
           }
           else{
             this.rootPage = LoginPage;
           }
-        });
-        console.log("entre aqui")
-
+        });        
       }
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -143,11 +121,101 @@ export class MyApp {
     });
   }
 
-  private delete(){
-    this.storage.get('token').then((val) => {
-      this.bdService.delete(val);
-    });
 
+  private createDatabaseMenu(){
+    if(this.device.platform){
+      this.sqlite.create({
+        name: 'data.db',
+        location: 'default' // the location field is required
+      })
+      .then((db) => {
+        this.bdService.setDatabase(db);
+        return this.bdService.createTableMenu();
+      }).then(()=>{
+        this.splashScreen.hide();
+
+        this.events.subscribe('group:changed', group => {
+          try{
+            this.bdService.selectMenu().then(menu => {
+            console.log(menu)
+            console.log("parte del menu")
+            if(menu[0].menu == "Cliente"){  
+              console.log("entre en cliente ")        
+              this.pages = [
+                  { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+                  { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+                  { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" },
+                ];
+            }
+            else{
+              console.log("entre en jefe ")        
+              this.pages = [
+                  { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+                  { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
+                  { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
+                  { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+                  { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }              
+                ];
+            }
+          })
+          .catch( error => {
+            console.error( error );
+          });
+
+          }catch(e){console.log(e)}
+
+        }) //...
+          try{
+            this.bdService.selectMenu().then(menu => {
+              console.log(menu)
+              console.log("parte del menu")
+              if(menu[0].menu == "Cliente"){  
+                console.log("entre en cliente ")        
+                this.pages = [
+                    { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+                    { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+                    { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" },
+                  ];
+              }
+              else{
+                console.log("entre en jefe ")        
+                this.pages = [
+                    { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+                    { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
+                    { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
+                    { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+                    { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }              
+                  ];
+              }
+            })
+            .catch( error => {
+              console.error( error );
+            });
+            }catch(e){
+              console.log(e)
+            }
+
+
+      })
+      .catch(error =>{
+        console.error(error);
+      });
+    }
+    else{
+      this.pages = [
+        { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+        { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
+        { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
+        { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+        { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }              
+      ];
+    }
+  }
+
+
+  private delete(){    
+    this.bdService.delete();  
+    this.bdService.deleteMenu();      
   }
 
   close() {
@@ -166,6 +234,7 @@ export class MyApp {
                   if(this.device.platform){
                     this.delete();
                   }
+                  this.storage.set('token', 0);
                   this.nav.setRoot(LoginPage);
                 },
                 err => {

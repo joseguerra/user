@@ -61,11 +61,7 @@ export class MapPage {
           title: 'Hello World!'
         });
       }
-    }
-
-    
-    
-
+    }        
   }
 
   get() {
