@@ -62,8 +62,9 @@ export class HomePage {
                 color:   undefined,
               });
               this.backgroundMode.enable();
-              window.setInterval(this.background(),5000);
+              setInterval(this.background,this.frecuencia_rastreo*1000);  
             }
+            setInterval(this.background,this.frecuencia_rastreo*1000); 
       
           },
           err => {        
@@ -76,6 +77,8 @@ export class HomePage {
   }
 
   background(){
+    var object = this;
+    console.log("entre")
     /*const config: BackgroundGeolocationConfig = {
       desiredAccuracy: 0,
       stationaryRadius: 20,
@@ -84,30 +87,29 @@ export class HomePage {
       interval: this.frecuencia_rastreo*1000
     };*/
 
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.latitud = String(resp.coords.latitude);
-      this.longitud = String(resp.coords.longitude);
-      console.log(this.latitud)
+    navigator.geolocation.getCurrentPosition(function(position) {
+      object.latitud = String(position.coords.latitude);
+      object.longitud = String(position.coords.longitude);
+      console.log(object.latitud)
 
-      var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.latitud + ',' + this.longitud + '&sensor=false';       
+      var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + object.latitud + ',' + object.longitud + '&sensor=false';       
       
-      this.ubicaciones.get(geocoding).subscribe(
+      object.ubicaciones.get(geocoding).subscribe(
       location => {  
         console.log(location)                
-        this.ubicacion =location.results[0].formatted_address;
+        object.ubicacion =location.results[0].formatted_address;
         var data = {
-          latitud: this.latitud,
-          longitud: this.longitud,
+          latitud: object.latitud,
+          longitud: object.longitud,
           fecha: Date.now(),
-          formatted_address: this.ubicacion
-
+          formatted_address: object
         }
 
-        this.storage.get('token').then((val) => {
-          this.home.location(val,data).subscribe(
+        object.storage.get('token').then((val) => {
+          object.home.location(val,data).subscribe(
             data => {
               console.log(data)
-              this.alertaKilometros();
+              object.alertaKilometros();
             },
             err => {        
               console.log(err)
@@ -121,50 +123,10 @@ export class HomePage {
       })
 
 
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
-    /*
-    this.backgroundGeolocation.configure(config)
-    .subscribe((location: BackgroundGeolocationResponse) => {
-      this.latitud = String(location.latitude);
-      this.longitud = String(location.longitude);
-      var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + location.latitude + ',' + location.longitude + '&sensor=false';       
-      
-      this.ubicaciones.get(geocoding).subscribe(
-      location => {                  
-        this.ubicacion =location.results[0].formatted_address;
-        var data = {
-          latitud: location.latitude,
-          longitud: location.longitude,
-          fecha: Date.now(),
-          formatted_address: location.results[0].formatted_address
-
-        }
-
-        this.storage.get('token').then((val) => {
-          this.home.location(val,data).subscribe(
-            data => {
-              console.log(data)
-              this.alertaKilometros();
-            },
-            err => {        
-              console.log(err)
-            }
-          );
-                  
-        });
-        
-        console.log(location);     
-
-        },
-        err => {        
-          console.log(err)
-        })
-    });
-    // start recording location
-    this.backgroundGeolocation.start();*/
+    })
   }
+
+  
 
   alertaKilometros(){
     var self = this;
