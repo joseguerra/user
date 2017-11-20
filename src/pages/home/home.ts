@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,AlertController,LoadingController } from 'ionic-angular';
+import { NavController,AlertController,LoadingController,Events } from 'ionic-angular';
 import { SMS } from '@ionic-native/sms';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 import { Device } from '@ionic-native/device';
@@ -37,35 +37,23 @@ export class HomePage {
               private callNumber: CallNumber,
               private geolocation: Geolocation,
               private backgroundMode: BackgroundMode,
+              private events: Events,
               private device: Device) {                  
   }
 
   ionViewDidLoad(){
     this.storage.get('token').then((val) => {
         this.home.servicios(val).subscribe(
-          data => {
-            console.log(data)
+          data => {            
             this.frecuencia_rastreo = data.results[0].frecuencia_rastreo;
             this.kilometraje = data.results[0].kilometraje;
             this.velocidad = data.results[0].velocidad;       
             this.latitud_inicial = data.results[0].latitud_inicial;            
             this.longitud_inicial = data.results[0].longitud_inicial;            
-            
+            console.log(data)
             if(this.device.platform){
-              this.backgroundMode.setDefaults({
-                title: "Gururas",
-                text: "Ejecutandose ...",
-                bigText: false,
-                resume:  true,
-                silent:  true,
-                hidden:  true,
-                color:   undefined,
-              });
-              this.backgroundMode.enable();
-              setInterval(this.background,this.frecuencia_rastreo*1000);  
-            }
-            setInterval(this.background,this.frecuencia_rastreo*1000); 
-      
+              this.background()                              
+            }            
           },
           err => {        
             console.log(err)
@@ -76,54 +64,104 @@ export class HomePage {
 
   }
 
-  background(){
+  background(){    
     var object = this;
-    console.log("entre")
-    /*const config: BackgroundGeolocationConfig = {
-      desiredAccuracy: 0,
-      stationaryRadius: 20,
-      distanceFilter: 10,
-      debug: false, //  enable this hear sounds for background-geolocation life-cycle.
-      interval: this.frecuencia_rastreo*1000
-    };*/
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
 
-    navigator.geolocation.getCurrentPosition(function(position) {
+    loading.present();
+
+    navigator.geolocation.getCurrentPosition(function(position){
       object.latitud = String(position.coords.latitude);
-      object.longitud = String(position.coords.longitude);
+      object.longitud = String(position.coords.longitude);      
       console.log(object.latitud)
-
+      console.log(object.longitud)
       var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + object.latitud + ',' + object.longitud + '&sensor=false';       
       
       object.ubicaciones.get(geocoding).subscribe(
-      location => {  
-        console.log(location)                
+      location => {     
+        console.log(location)     
         object.ubicacion =location.results[0].formatted_address;
         var data = {
           latitud: object.latitud,
           longitud: object.longitud,
           fecha: Date.now(),
-          formatted_address: object
-        }
+          formatted_address: object.ubicacion
+        }      
 
         object.storage.get('token').then((val) => {
           object.home.location(val,data).subscribe(
-            data => {
-              console.log(data)
+            data => {     
+              loading.dismiss();
               object.alertaKilometros();
+
+              let config = {
+                desiredAccuracy: 0,
+                stationaryRadius: 0,
+                distanceFilter: 0,                
+                interval: this.frecuencia_rastreo*60000
+              };
+              object.backgroundGeolocation.configure(config).subscribe((location) => {
+                object.latitud = String(location.latitude);
+                object.longitud = String(location.longitude);      
+                console.log(object.latitud)
+                console.log(object.longitud)
+                var geocoding ='https://maps.googleapis.com/maps/api/geocode/json?latlng=' + object.latitud + ',' + object.longitud + '&sensor=false';       
+                
+                object.ubicaciones.get(geocoding).subscribe(
+                location => {     
+                  console.log(location)     
+                  object.ubicacion =location.results[0].formatted_address;
+                  var data = {
+                    latitud: object.latitud,
+                    longitud: object.longitud,
+                    fecha: Date.now(),
+                    formatted_address: object.ubicacion
+                  }      
+
+                  object.storage.get('token').then((val) => {
+                    object.home.location(val,data).subscribe(
+                      data => {         
+                        object.alertaKilometros();
+                      },
+                      err => {        
+                        console.log(err)
+                      }
+                    );
+                            
+                  });
+                },
+                err => {        
+                  console.log(err)
+                })
+              })
+
+              object.backgroundGeolocation.start();
+
+              object.events.subscribe('setInterval:changed', group => {
+                console.log("pare la vaina")
+                object.backgroundGeolocation.stop();
+              })
+
+
             },
             err => {        
               console.log(err)
             }
           );
                   
+        },err=>{
+          loading.dismiss();
         });
       },
       err => {        
         console.log(err)
       })
-
-
     })
+
+
+    
   }
 
   
@@ -138,6 +176,8 @@ export class HomePage {
         lat: parseFloat(this.latitud_inicial),
         lng: parseFloat(this.longitud_inicial)
     }
+    console.log(destino)
+    console.log(miUbicacion)
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
       {
@@ -147,6 +187,8 @@ export class HomePage {
       },function (response, status) {       
         try{
           var res = response.rows[0].elements[0].distance.text.split(" ");                        
+          console.log(res)
+          console.log(self.kilometraje)
         if(res[0] > self.kilometraje){
           self.alerta("Km")
         }  

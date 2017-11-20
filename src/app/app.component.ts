@@ -134,51 +134,20 @@ export class MyApp {
       }).then(()=>{
         this.splashScreen.hide();
 
-        this.events.subscribe('group:changed', group => {
-          try{
-            this.bdService.selectMenu().then(menu => {
-            console.log(menu)
-            console.log("parte del menu")
-            if(menu[0].menu == "Cliente"){  
-              console.log("entre en cliente ")        
-              this.pages = [
-                  { title: 'Home', component: HomePage, icon: "ios-home-outline" },
-                  { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
-                  { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" },
-                ];
+        this.events.subscribe('group:changed', group => {          
+            this.bdService.selectMenu().then(menu => {            
+            if(menu.length == 0){              
+              this.nav.setRoot(LoginPage);
             }
-            else{
-              console.log("entre en jefe ")        
-              this.pages = [
-                  { title: 'Home', component: HomePage, icon: "ios-home-outline" },
-                  { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
-                  { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
-                  { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
-                  { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }              
-                ];
-            }
-          })
-          .catch( error => {
-            console.error( error );
-          });
-
-          }catch(e){console.log(e)}
-
-        }) //...
-          try{
-            this.bdService.selectMenu().then(menu => {
-              console.log(menu)
-              console.log("parte del menu")
-              if(menu[0].menu == "Cliente"){  
-                console.log("entre en cliente ")        
+            else{              
+              if(menu[0].menu == "Cliente"){                  
                 this.pages = [
                     { title: 'Home', component: HomePage, icon: "ios-home-outline" },
                     { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
                     { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" },
                   ];
               }
-              else{
-                console.log("entre en jefe ")        
+              else{                
                 this.pages = [
                     { title: 'Home', component: HomePage, icon: "ios-home-outline" },
                     { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
@@ -187,6 +156,40 @@ export class MyApp {
                     { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }              
                   ];
               }
+            }
+
+          })
+          .catch( error => {
+            console.error( error );
+          });
+
+         
+
+        }) //...
+          try{
+            this.bdService.selectMenu().then(menu => {              
+              if(menu.length == 0){                
+                this.nav.setRoot(LoginPage);
+              }
+              else{                
+                if(menu[0].menu == "Cliente"){                    
+                  this.pages = [
+                      { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+                      { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+                      { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" },
+                    ];
+                }
+                else{                  
+                  this.pages = [
+                      { title: 'Home', component: HomePage, icon: "ios-home-outline" },
+                      { title: 'Lista de usuarios', component: ListPage, icon: "ios-people-outline" },
+                      { title: 'Ubicación', component: MapPage, icon: "ios-navigate-outline" },
+                      { title: 'Terminos y condiciones', component: TermsPage, icon: "ios-list-box-outline" },
+                      { title: 'Cambiar contraseña', component: PasswordPage, icon: "ios-list-box-outline" }              
+                    ];
+                }
+              }
+
             })
             .catch( error => {
               console.error( error );
@@ -226,7 +229,7 @@ export class MyApp {
         {
           text: 'Cerrar',
           handler: data => {
-
+            this.events.publish('setInterval:changed', 1);
             this.storage.get('token').then((val) => {
               this.login.logout(val).subscribe(
                 data => {
