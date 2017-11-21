@@ -26,6 +26,7 @@ export class HomePage {
   public frecuencia_rastreo: number;
   public kilometraje: number;
   public velocidad: number;
+  public tiempo_recarga: number = 9000; // 9seg
   constructor(public navCtrl: NavController,
               private sms: SMS,
               private storage: Storage,
@@ -38,16 +39,17 @@ export class HomePage {
               private geolocation: Geolocation,
               private backgroundMode: BackgroundMode,
               private events: Events,
-              private device: Device) {                  
+              private device: Device) {
+              
   }
 
   ionViewDidLoad(){
     this.storage.get('token').then((val) => {
         this.home.servicios(val).subscribe(
-          data => {            
+          data => {
             this.frecuencia_rastreo = data.results[0].frecuencia_rastreo;
             this.kilometraje = data.results[0].kilometraje;
-            this.velocidad = data.results[0].velocidad;       
+            this.velocidad = data.results[0].velocidad;
             this.latitud_inicial = data.results[0].latitud_inicial;            
             this.longitud_inicial = data.results[0].longitud_inicial;            
             console.log(data)
@@ -164,8 +166,6 @@ export class HomePage {
     
   }
 
-  
-
   alertaKilometros(){
     var self = this;
     var destino = {
@@ -176,8 +176,6 @@ export class HomePage {
         lat: parseFloat(this.latitud_inicial),
         lng: parseFloat(this.longitud_inicial)
     }
-    console.log(destino)
-    console.log(miUbicacion)
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
       {
@@ -187,11 +185,34 @@ export class HomePage {
       },function (response, status) {       
         try{
           var res = response.rows[0].elements[0].distance.text.split(" ");                        
-          console.log(res)
-          console.log(self.kilometraje)
-        if(res[0] > self.kilometraje){
-          self.alerta("Km")
-        }  
+          
+          if(res[0] > self.kilometraje){
+            self.alerta("Km")
+          }
+          
+          var tiempo_seg = self.tiempo_recarga / 1000;
+          var tiempo_horas = tiempo_seg / 3600;
+          var velocidad = res[0] / tiempo_horas;
+          ////////////////////////////////////////////7/
+          let alert = self.alertCtrl.create({
+            title: 'Velocidad',
+            subTitle: velocidad + " Kilometros por hora",
+            buttons: ['OK']
+          });
+          alert.present();
+          /////////////////////////////////////////////
+          if (velocidad > self.velocidad)
+          {
+           self.alerta("Vl");
+          }
+          self.latitud_inicial = self.latitud;
+          self.longitud_inicial = self.longitud;
+          setTimeout(function(){ 
+            try{
+              self.alertaKilometros();
+            }catch(e){console.log(e)}
+          }, self.tiempo_recarga);
+            
         }catch(e){
           console.log("no se pudo calcular la distancia")
         } 
