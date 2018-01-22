@@ -26,7 +26,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(NavController) navController: NavController;
 
-  rootPage: any = ""
+  rootPage: any = LoginPage
   group: string;
   pages: Array<{title: string, component: any, icon: string}>;
 
@@ -77,7 +77,7 @@ export class MyApp {
         console.log("aqui no puedo entrar")
         this.storage.get('token').then((val) => {          
           if(val){
-            this.rootPage = HomePage;
+            this.rootPage = LoginPage;
           }
           else{
             this.rootPage = LoginPage;
