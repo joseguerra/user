@@ -19,6 +19,7 @@ import {NotificationPage} from '../pages/notification/notification';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { OneSignal } from '@ionic-native/onesignal';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { SMS } from '@ionic-native/sms';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Device } from '@ionic-native/device';
@@ -80,6 +81,7 @@ import {Ubicaciones} from '../pages/ubicaciones/ubicaciones.provider';
     StatusBar,
     SplashScreen,
     OneSignal,
+    LocationAccuracy,
     SMS,
     BackgroundGeolocation,
     Device,

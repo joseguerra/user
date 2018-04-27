@@ -1,5 +1,5 @@
 export class Rutas{
-  urlbase: string = "http://guaruras.herokuapp.com/";
+  urlbase: string = "http://35.166.228.162/";
   constructor(){}
 
 

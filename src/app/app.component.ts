@@ -17,6 +17,7 @@ import { Storage } from '@ionic/storage';
 import { SQLite } from '@ionic-native/sqlite';
 import {BdService} from './bd';
 import {NotificationPage} from '../pages/notification/notification';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 @Component({
   selector: 'page-app',
@@ -34,6 +35,7 @@ export class MyApp {
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               private oneSignal: OneSignal,
+              private locationAccuracy: LocationAccuracy,
               private device: Device,
               private bdService:BdService,
               private storage: Storage,
@@ -49,6 +51,20 @@ export class MyApp {
   initializeApp() {
     this.platform.ready().then(() => {
       if(this.device.platform){
+
+        this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+
+          if(canRequest) {
+            // the accuracy option will be ignored by iOS
+            this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+              () => console.log('Request successful'),
+              error => console.log('Error requesting location permissions', error)
+            );
+          }
+
+        });
+
+
         console.log("aqui si puedo entrar")
         this.oneSignal.startInit('84d86d4d-5c55-4653-9ff5-3eafd056cdd4', '1022113476844');
 
@@ -74,6 +90,19 @@ export class MyApp {
 
 
       else{
+
+        this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+
+          if(canRequest) {
+            // the accuracy option will be ignored by iOS
+            this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+              () => console.log('Request successful'),
+              error => console.log('Error requesting location permissions', error)
+            );
+          }
+
+        });
+
         console.log("aqui no puedo entrar")
         this.storage.get('token').then((val) => {          
           if(val){
